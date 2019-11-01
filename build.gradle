@@ -1,0 +1,26 @@
+allprojects {
+    group = 'ch.alni'
+    version = '1.0.0'
+
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        buildNumber = System.getenv('TRAVIS') ?  System.getenv('TRAVIS_BUILD_NUMBER') : '0'
+        buildVersion = version + '.' + buildNumber
+    }
+
+    apply plugin: 'idea'
+}
+
+subprojects {
+    project.tasks.withType(JavaCompile) {
+        sourceCompatibility = '11'
+        targetCompatibility = '11'
+    }
+}
+
+wrapper {
+    gradleVersion = '5.6.3'
+}
