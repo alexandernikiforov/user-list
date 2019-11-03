@@ -8,4 +8,5 @@ install:
   - npm install
 
 script:
-  - npm build
+  - pwd
+  - ng build
