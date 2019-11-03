@@ -6,7 +6,19 @@ install:
   - cd ./user-list-frontend
   - npm install -g @angular/cli
   - npm install
+  - curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+  - az --version
 
 script:
   - pwd
   - ng build
+
+before_deploy:
+  - az login --service-principal -u $AZURE_APP_ID -p $AZURE_SECRET_KEY --tenant $AZURE_SUBSCRIPTION_ID
+
+deploy:
+  provider: script
+  verbose: true
+  skip_cleanup: true
+  #  script: az storage blob upload-batch -d $AZURE_CONTAINER_PATH -s /dist --content-cache-control "$AZURE_CACHE_CONTROL" --account-key $AZURE_STORAGE_ACCOUNT_KEY --account-name $AZURE_STORAGE_ACCOUNT_NAME
+  script: ls dist/
