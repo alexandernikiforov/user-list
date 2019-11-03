@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "10.16"
+
+install:
+  - cd ./user-list-frontend
+  - npm install -g @angular/cli
+  - npm install
+
+script:
+  - cd ./user-list-frontend
+  - npm build
