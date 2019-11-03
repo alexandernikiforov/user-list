@@ -20,4 +20,7 @@ deploy:
   provider: script
   verbose: true
   skip_cleanup: true
-  script: az storage blob upload-batch -d $AZURE_BLOB_CONTAINER_PATH -s /dist --content-cache-control "$AZURE_CACHE_CONTROL"
+  script: az storage blob upload-batch -d $AZURE_BLOB_CONTAINER_PATH -s /dist
+
+after_deploy:
+  - az logout
