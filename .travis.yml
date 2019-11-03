@@ -8,5 +8,4 @@ install:
   - npm install
 
 script:
-  - cd ./user-list-frontend
   - npm build
