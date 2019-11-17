@@ -1,0 +1,22 @@
+.sign-button-panel {
+  max-width: 720px;
+  margin: 2em auto;
+}
+
+.sign-button-panel > h3 {
+  width: 100%;
+  text-align: center;
+}
+
+.sign-button {
+  padding: 0.5em 2em;
+}
+
+.sign-button > button {
+  width: 100%;
+}
+
+.sign-button--last {
+  margin-top: 1em;
+}
+
