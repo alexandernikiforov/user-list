@@ -1,7 +1,19 @@
-allprojects {
-    group = 'ch.alni'
-    version = '1.0.0'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
 
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.2.1.RELEASE")
+    }
+
+}
+
+plugins {
+    id 'org.springframework.boot' version '2.2.1.RELEASE' apply false
+}
+
+allprojects {
     repositories {
         mavenCentral()
     }
@@ -19,6 +31,15 @@ subprojects {
         sourceCompatibility = '11'
         targetCompatibility = '11'
     }
+
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+
 }
 
 wrapper {

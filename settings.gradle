@@ -1,3 +1,6 @@
 rootProject.name = 'user-list'
 
-include 'user-list-frontend'
+include 'user-list-frontend',
+        'user-list-app',
+        'user-list-rest',
+        'user-list-service'
