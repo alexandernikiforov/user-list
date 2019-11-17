@@ -10,15 +10,19 @@ import {MatTableModule} from "@angular/material/table";
 import {EntryScreenComponent} from './entry-screen/entry-screen.component';
 import {MatButtonModule} from "@angular/material/button";
 import {LoginGuard} from "./login-guard";
+import {HttpClientModule} from "@angular/common/http";
+import {AdminComponent} from './admin/admin.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserListComponent,
-    EntryScreenComponent
+    EntryScreenComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,

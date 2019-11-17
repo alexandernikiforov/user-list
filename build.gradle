@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
 buildscript {
     repositories {
         mavenCentral()
@@ -32,11 +34,12 @@ subprojects {
         targetCompatibility = '11'
     }
 
+    // propagate Spring Boot dependency management down to the projects
     apply plugin: 'io.spring.dependency-management'
 
     dependencyManagement {
         imports {
-            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+            mavenBom SpringBootPlugin.BOM_COORDINATES
         }
     }
 
