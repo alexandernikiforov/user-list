@@ -5,19 +5,26 @@ plugins {
 dependencies {
     implementation project(path: ':user-list-service')
 
+    // the following dependency configuration is the purest one (it does not require any starter jar)
     implementation 'org.springframework:spring-webmvc'
     implementation 'org.slf4j:slf4j-api'
+    implementation 'com.fasterxml.jackson.core:jackson-core'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
-    testImplementation 'ch.qos.logback:logback-classic'
+    testImplementation 'junit:junit'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.springframework:spring-test'
+    testImplementation 'org.springframework.boot:spring-boot-test'
 
-//    testImplementation 'junit:junit'
-//    testImplementation 'org.mockito:mockito-core'
-//    testImplementation 'org.skyscreamer:jsonassert'
-//    testImplementation 'org.springframework:spring-test'
-//    testImplementation 'org.springframework.boot:spring-boot-test'
-//
-//    testImplementation group: 'javax.servlet', name: 'javax.servlet-api'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-web'
-
+    // there is still a dependency on the servlet-api that is not imported by the spring-test;
+    // the reason this dependency is missing, is that Spring does not know exactly, which version is needed,
+    // as Jetty, for instance, does not support the version 4.01 yet, and as no starter dependency is included,
+    // the target configuration ends up without any Servlet API jar
+    testRuntimeOnly 'javax.servlet:javax.servlet-api'
+    // we are going to log with logback
+    testRuntimeOnly 'ch.qos.logback:logback-classic'
+    // this dependency should be included if we want to check the JSON returned by the mock server
+    testRuntimeOnly 'org.skyscreamer:jsonassert'
 }
