@@ -8,6 +8,16 @@ dependencies {
     implementation 'org.springframework:spring-webmvc'
     implementation 'org.slf4j:slf4j-api'
 
+    testImplementation 'ch.qos.logback:logback-classic'
+
+//    testImplementation 'junit:junit'
+//    testImplementation 'org.mockito:mockito-core'
+//    testImplementation 'org.skyscreamer:jsonassert'
+//    testImplementation 'org.springframework:spring-test'
+//    testImplementation 'org.springframework.boot:spring-boot-test'
+//
+//    testImplementation group: 'javax.servlet', name: 'javax.servlet-api'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-web'
+
 }
