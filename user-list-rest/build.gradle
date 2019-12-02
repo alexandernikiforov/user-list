@@ -7,6 +7,7 @@ dependencies {
 
     // the following dependency configuration is the purest one (it does not require any starter jar)
     implementation 'org.springframework:spring-webmvc'
+    implementation 'org.springframework.boot:spring-boot'
     implementation 'org.slf4j:slf4j-api'
     implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation 'com.fasterxml.jackson.core:jackson-databind'

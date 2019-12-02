@@ -4,10 +4,16 @@ plugins {
 
 dependencies {
     implementation 'org.springframework:spring-context'
+    implementation 'org.springframework.boot:spring-boot'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     implementation 'com.google.auto.value:auto-value-annotations:1.7'
-    annotationProcessor  'com.google.auto.value:auto-value:1.7'
+    annotationProcessor 'com.google.auto.value:auto-value:1.7'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
-    testImplementation 'org.assertj:assertj-core:3.14.0'
+    testImplementation 'junit:junit'
+    testImplementation 'org.assertj:assertj-core'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.springframework:spring-test'
+    testImplementation 'org.springframework.boot:spring-boot-test'
+
 }
