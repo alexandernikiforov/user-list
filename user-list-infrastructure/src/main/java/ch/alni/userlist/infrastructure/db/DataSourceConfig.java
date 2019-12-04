@@ -1,4 +1,4 @@
-package ch.alni.userlist.service;
+package ch.alni.userlist.infrastructure.db;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +10,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import javax.sql.DataSource;
 
 @Configuration
-public class AdminServiceTestConfig {
+public class DataSourceConfig {
 
     @Bean
     public DataSource dataSource() {
@@ -21,7 +21,8 @@ public class AdminServiceTestConfig {
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-        adapter.setGenerateDdl(true);
+        adapter.setGenerateDdl(false);
         return adapter;
     }
+
 }

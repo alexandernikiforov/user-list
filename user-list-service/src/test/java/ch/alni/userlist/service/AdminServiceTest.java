@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {
-        AdminServiceConfig.class, AdminServiceTestConfig.class
+        ServiceConfig.class, AdminServiceTestConfig.class
 })
 @TestPropertySource("/test.properties")
 public class AdminServiceTest {

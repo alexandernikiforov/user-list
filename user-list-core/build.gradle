@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api'
+
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'jakarta.persistence:jakarta.persistence-api'
+    implementation 'org.springframework.data:spring-data-jpa'
+}
