@@ -4,12 +4,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "USER")
 public class User {
 
     @Id
@@ -32,6 +38,9 @@ public class User {
 
     @Column(name = "ACTIVE", nullable = false)
     private boolean active;
+
+    @OneToMany(mappedBy = "")
+    private Set<UserLogin> logins;
 
     public String getFirstName() {
         return firstName;
@@ -81,6 +90,22 @@ public class User {
         this.active = active;
     }
 
+    public Set<UserLogin> getLogins() {
+        return logins;
+    }
+
+    public void setLogins(Set<UserLogin> logins) {
+        this.logins = logins;
+    }
+
+    @PrePersist
+    private void onCreate() {
+        id = UUID.randomUUID().toString();
+        final OffsetDateTime now = OffsetDateTime.now();
+        createdAt = now;
+        lastAccessedAt = now;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -103,5 +128,9 @@ public class User {
         return new HashCodeBuilder(17, 37)
                 .append(id)
                 .toHashCode();
+    }
+
+    public String getId() {
+        return id;
     }
 }
