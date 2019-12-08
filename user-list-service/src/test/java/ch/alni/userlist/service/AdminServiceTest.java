@@ -8,7 +8,8 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 import ch.alni.userlist.core.CoreConfig;
 import ch.alni.userlist.core.UserRepository;
@@ -26,6 +27,7 @@ public class AdminServiceTest {
     public static final String EMAIL = "email@nowhere.org";
     public static final String FIRST_NAME = "firstName";
     public static final String LAST_NAME = "lastName";
+
     @Autowired
     private AdminService adminService;
 
@@ -33,7 +35,6 @@ public class AdminServiceTest {
     private UserRepository userRepository;
 
     @After
-    @Transactional
     public void tearDown() throws Exception {
         userRepository.deleteAll();
     }
@@ -58,5 +59,11 @@ public class AdminServiceTest {
 
         // try to find it
         assertThat(adminService.findUser(userId)).hasValue(userData);
+    }
+
+    @Test
+    public void testGetUser() {
+        // nothing is in the DB by default
+        assertThat(adminService.findUser(UUID.randomUUID().toString())).isEmpty();
     }
 }

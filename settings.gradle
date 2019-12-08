@@ -5,4 +5,5 @@ include 'user-list-frontend',
         'user-list-core',
         'user-list-rest',
         'user-list-infrastructure',
+        'user-list-deployment',
         'user-list-service'

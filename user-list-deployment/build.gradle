@@ -1,0 +1,46 @@
+plugins {
+    id 'base'
+}
+
+configurations {
+    applicationJar
+}
+
+dependencies {
+    applicationJar project(path: ':user-list-app', configuration: 'bootArchives')
+}
+
+task copyApplicationJar(type: Copy) {
+    from {
+        configurations.applicationJar
+    }
+    into 'build/dependencies'
+}
+
+task buildImage(type: Exec) {
+    dependsOn copyApplicationJar
+    executable = 'docker'
+
+    args = [
+            'build',
+            '--build-arg', "APP_JAR_VERSION=${project.version}",
+            '-t', "user-list-app:${project.buildVersion}",
+            '-t', "user-list-app:latest",
+            '.'
+    ]
+}
+
+task runContainer(type: Exec) {
+    dependsOn buildImage
+    executable = 'docker'
+
+    args = [
+            'run',
+            '-d',
+            '-p', "8080:8080",
+            '--name', 'user-list-app',
+            "user-list-app:latest"
+    ]
+}
+
+assemble.dependsOn buildImage
