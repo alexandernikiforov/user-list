@@ -17,20 +17,24 @@ task copyApplicationJar(type: Copy) {
     into 'build/dependencies'
 }
 
-task buildImage(type: Exec) {
+task buildImage(type: Exec, group: 'build') {
+    description = 'Builds the Docker image with the app JAR'
     dependsOn copyApplicationJar
     executable = 'docker'
 
     args = [
             'build',
             '--build-arg', "APP_JAR_VERSION=${project.version}",
-            '-t', "user-list-app:${project.buildVersion}",
+            '-t', "user-list-app:${project.version}",
+            '-t', "${AZURE_ACR_ADDR_DEV}/user-list-app:${project.version}",
+            '-t', "${AZURE_ACR_ADDR_DEV}/user-list-app:latest",
             '-t', "user-list-app:latest",
             '.'
     ]
 }
 
 task runContainer(type: Exec) {
+    description = 'Runs container with the app JAR locally in Docker'
     dependsOn buildImage
     executable = 'docker'
 
@@ -41,6 +45,46 @@ task runContainer(type: Exec) {
             '--name', 'user-list-app',
             "user-list-app:latest"
     ]
+}
+
+def appId = System.getenv('AZURE_SP_APP_ID')
+def password = System.getenv('AZURE_SP_PASSWORD')
+def tenantId = System.getenv('AZURE_SP_TENANT_ID')
+
+task createAcr(type: Exec) {
+    description = 'Creates Azure Container Registry resources'
+    executable = 'docker'
+    args = [
+            'run',
+            '-v', "${workingDir}/src/azure:/exec",
+            '--env', "ENV_AZURE_SP_APP_ID=$appId",
+            '--env', "ENV_AZURE_SP_PASSWORD=$password",
+            '--env', "ENV_AZURE_SP_TENANT_ID=$tenantId",
+            '--env', "ENV_AZURE_ACR_RESOURCE_GROUP=${System.getenv('AZURE_ACR_RESOURCE_GROUP')}",
+            '--env', "ENV_AZURE_ACR_NAME=${System.getenv('AZURE_ACR_NAME')}",
+            'mcr.microsoft.com/azure-cli:latest', 'bash', '/exec/deployment.sh', 'createAcr'
+    ]
+}
+
+task publishImage {
+    description = 'Publishes the image with the app JAR to to Azure Container Registry resources'
+    doLast {
+        project.exec {
+            executable = 'az.cmd'
+
+            args = [
+                    'acr', 'login',
+                    '--name', "${AZURE_ACR_NAME_DEV}",
+                    '--password', "$password",
+                    '--username', "$appId"
+            ]
+        }
+
+        project.exec {
+            executable = 'docker'
+            args = ['push', "${AZURE_ACR_ADDR_DEV}/user-list-app:1.0.0"]
+        }
+    }
 }
 
 assemble.dependsOn buildImage
