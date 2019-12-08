@@ -7,6 +7,7 @@ import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -30,16 +31,16 @@ public class User {
     @Column(name = "EMAIL", nullable = false)
     private String email;
 
-    @Column(name = "CREATED_AT", nullable = false, columnDefinition = "TIME WITH TIME ZONE")
+    @Column(name = "CREATED_AT", nullable = false)
     private OffsetDateTime createdAt;
 
-    @Column(name = "LAST_ACCESSED_AT", nullable = false, columnDefinition = "TIME WITH TIME ZONE")
+    @Column(name = "LAST_ACCESSED_AT", nullable = false)
     private OffsetDateTime lastAccessedAt;
 
     @Column(name = "ACTIVE", nullable = false)
     private boolean active;
 
-    @OneToMany(mappedBy = "")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserLogin> logins;
 
     public String getFirstName() {

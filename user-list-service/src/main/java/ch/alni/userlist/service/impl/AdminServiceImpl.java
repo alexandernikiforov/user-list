@@ -61,7 +61,7 @@ class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+    @Transactional(propagation = Propagation.REQUIRED)
     public Optional<UserData> findUser(String userId) {
         LOG.info("searching for user with ID {}", userId);
         return userRepository.findById(userId).map(AdminServiceImpl::toUserData);

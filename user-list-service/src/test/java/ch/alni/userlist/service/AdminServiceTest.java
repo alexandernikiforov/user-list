@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
         ServiceConfig.class, AdminServiceTestConfig.class, CoreConfig.class
 })
 @TestPropertySource("/test.properties")
-@Transactional
 @Commit
 public class AdminServiceTest {
 
@@ -34,6 +33,7 @@ public class AdminServiceTest {
     private UserRepository userRepository;
 
     @After
+    @Transactional
     public void tearDown() throws Exception {
         userRepository.deleteAll();
     }
