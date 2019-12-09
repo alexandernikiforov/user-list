@@ -66,6 +66,28 @@ task createAcr(type: Exec) {
     ]
 }
 
+task createUserListResources(type: Exec) {
+    description = 'Creates resources for the User List App (cluster, DB)'
+    executable = 'docker'
+    args = [
+            'run',
+            '-v', "${System.getProperty('user.home')}/.ssh:/root/.ssh",
+            '-v', "${workingDir}/src/azure:/exec",
+            '--env', "ENV_AZURE_SP_APP_ID=$appId",
+            '--env', "ENV_AZURE_SP_PASSWORD=$password",
+            '--env', "ENV_AZURE_SP_TENANT_ID=$tenantId",
+
+            '--env', "ENV_AZURE_ACR_RESOURCE_GROUP=${System.getenv('AZURE_ACR_RESOURCE_GROUP')}",
+            '--env', "ENV_AZURE_ACR_NAME=${System.getenv('AZURE_ACR_NAME')}",
+
+            '--env', "ENV_AZURE_RESOURCE_GROUP=${System.getenv('AZURE_RESOURCE_GROUP')}",
+            '--env', "ENV_AZURE_AKS_NAME=${System.getenv('AZURE_AKS_NAME')}",
+
+            'mcr.microsoft.com/azure-cli:latest', 'bash', '/exec/deployment.sh', 'createUserListResources'
+    ]
+}
+
+
 task publishImage {
     description = 'Publishes the image with the app JAR to to Azure Container Registry resources'
     doLast {

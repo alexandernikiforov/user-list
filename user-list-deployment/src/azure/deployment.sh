@@ -2,6 +2,8 @@
 
 acrResourceGroup="${ENV_AZURE_ACR_RESOURCE_GROUP}"
 acrName="${ENV_AZURE_ACR_NAME}"
+resourceGroup="${ENV_AZURE_RESOURCE_GROUP}"
+aksName="${ENV_AZURE_AKS_NAME}"
 
 deployAll() {
   az --version
@@ -14,7 +16,20 @@ login() {
 
 createAcr() {
   az group create --name "${acrResourceGroup}" --location "westeurope"
-  az acr create --resource-group "${acrResourceGroup}" --name "${acrName}" --sku Basic --location "westeurope"
+  az acr create --resource-group "${acrResourceGroup}" --location "westeurope" --name "${acrName}" --sku Basic
+}
+
+createUserListResources() {
+  az group create --name "${resourceGroup}" --location "westeurope"
+  az ad sp create-for-rbac --skip-assignment --name "${aksName}"
+  az aks create \
+      --resource-group "${resourceGroup}" --location "westeurope" \
+      --name "${aksName}" \
+      --service-principal "${aksName}" \
+      --ssh-key-value ~/.ssh/id_rsa.pub \
+      --node-count 2 \
+      --node-vm-size "Standard_A2_v2" \
+      --attach-acr "${acrName}"
 }
 
 logout() {
@@ -32,6 +47,12 @@ case $1 in
   createAcr)
     login
     createAcr
+    logout
+    ;;
+  createUserListResources)
+    login
+    createAcr
+    createUserListResources
     logout
     ;;
   *)
