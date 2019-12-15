@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: user-list-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: user-list-app
+      app.kubernetes.io/version: {{ version }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: user-list-app
+        app.kubernetes.io/version: {{ version }}
+    spec:
+      containers:
+        - name: user-list-app
+          image: {{ imageName }}
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: /actuator/health
+---
+# service description
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-list-app
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: user-list-app
+    app.kubernetes.io/version: {{ version }}
