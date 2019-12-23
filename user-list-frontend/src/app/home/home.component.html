@@ -1,0 +1,23 @@
+<div class="sign-button-panel">
+  <h3>Welcome to our latest and greatest application</h3>
+  <ng-template [ngIfElse]="showLoggedIn" [ngIf]="!loggedIn">
+    <div class="sign-button">
+      <button (click)="loginService.login()" color="primary" mat-flat-button>Sign-In With Active Directory</button>
+    </div>
+    <div class="sign-button sign-button--last">
+      <button color="primary" mat-stroked-button>Sign-Up</button>
+    </div>
+  </ng-template>
+  <ng-template #showLoggedIn>
+    <p>
+      We are glad to see you, <strong>{{ user.name }}</strong>. And promise not to send our spam to
+      {{ user.email || 'your email' }}.
+    </p>
+    <div class="sign-button">
+      <button (click)="loginService.logout()" color="primary" mat-flat-button>Sign-out</button>
+    </div>
+    <div *ngIf="user.roles.includes('admin')" class="sign-button">
+      <button (click)="navigateToAdminPage()" color="primary" mat-flat-button>Admin Access</button>
+    </div>
+  </ng-template>
+</div>

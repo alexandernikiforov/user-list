@@ -36,7 +36,7 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/admin", produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, path = "/admin", produces = MediaType.APPLICATION_JSON_VALUE)
     public Admin info() {
         LOG.info("requesting admin object");
         return adminService.getInfo();

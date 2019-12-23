@@ -1,28 +1,39 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
-import {Router} from "@angular/router";
-import {LoginService} from "./login.service";
+import {Router} from '@angular/router';
+import {LoginService} from './login.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(private router: Router, private loginService: LoginService) {
     console.log('Environment: ' + environment.apiUrl);
   }
 
-  logout() {
-    this.router.navigate(["/"])
+  get loggedIn(): boolean {
+    return this.loginService.loggedIn;
+  }
+
+  login() {
+    this.loginService.login();
+    this.router.navigate(['/admin'])
       .then(result => {
-        if (result) {
-          this.loginService.loggedIn = false;
-        }
+        console.log('User login');
       });
   }
 
-  isLoggedIn(): boolean {
-    return this.loginService.loggedIn;
+  logout() {
+    this.loginService.logout();
+    this.router.navigate(['/'])
+      .then(result => {
+        console.log('User logout');
+      });
+  }
+
+  ngOnInit(): void {
+    this.loginService.checkLogin();
   }
 }
