@@ -42,7 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/admin/**").hasAuthority("SCOPE_User.ReadWrite.All")
                 .mvcMatchers("/admin/**").hasAuthority("SCOPE_User.Read.All")
-                .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/actuator/**", "/v2/api-docs/**").permitAll()
+                .mvcMatchers("/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 // no sessions, and they are not used for security context management
