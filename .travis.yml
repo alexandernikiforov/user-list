@@ -20,7 +20,7 @@ deploy:
   provider: script
   verbose: true
   skip_cleanup: true
-  script: az storage blob upload-batch -d "\$web" -s ./dist --account-name $AZURE_STORAGE_ACCOUNT
+  script: az storage blob upload-batch -d \$web -s ./dist --account-name $AZURE_STORAGE_ACCOUNT
 
 after_deploy:
   - az logout
