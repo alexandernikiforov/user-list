@@ -20,7 +20,7 @@ deploy:
   provider: script
   verbose: true
   skip_cleanup: true
-  script: az storage blob upload-batch -d \$web -s ./dist
+  script: az storage blob upload-batch -d "$web" -s ./dist/user-list-frontend
 
 after_deploy:
   - az logout
