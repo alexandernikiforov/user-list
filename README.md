@@ -6,6 +6,6 @@ This is a sample project aiming to demonstrate the following:
 * How to use Azure Identity Management to restrict access to the application.
 
 Technologies used:
-* Java 13;
+* Java 13 (;
 * Spring Boot 2.2.1;
 * Angular 8.

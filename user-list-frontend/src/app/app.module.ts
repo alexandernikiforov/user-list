@@ -12,6 +12,7 @@ import {LoginGuard} from './login-guard';
 import {HttpClientModule} from '@angular/common/http';
 import {AdminComponent} from './admin/admin.component';
 import {HomeComponent} from './home/home.component';
+import {ENVIRONMENT_INITIALIZERS} from './core/services/app-init.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,10 @@ import {HomeComponent} from './home/home.component';
     MatTableModule,
     MatButtonModule
   ],
-  providers: [LoginGuard],
+  providers: [
+    ENVIRONMENT_INITIALIZERS,
+    LoginGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

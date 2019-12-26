@@ -1,0 +1,46 @@
+plugins {
+  id 'base'
+}
+
+configurations {
+  dist
+}
+
+task ngBuild(type: Exec, group: 'build') {
+  description = 'Builds the production configuration of the Angular application'
+  inputs.dir('src')
+  outputs.dir('dist')
+
+  executable =  isWindows() ?  'ng.cmd' : 'ng'
+  args = [
+    'build', '--prod', '--aot'
+  ]
+}
+
+task ngTest(type: Exec, group: 'verification') {
+  description = 'Start Angular tests'
+  executable =  isWindows() ?  'ng.cmd' : 'ng'
+  args = [
+    'test'
+  ]
+}
+
+task dist(type: Zip) {
+  description = 'Builds distribution of the production configuration of the Angular application'
+  from {
+    ngBuild
+  }
+}
+
+assemble.dependsOn dist
+// TODO make the tests run
+//check.dependsOn ngTest
+
+artifacts {
+  dist tasks.dist
+}
+
+// simple hack to find out whether we are on Windows bypassing the Gradle-internal API
+private static boolean isWindows() {
+  File.pathSeparator == ';'
+}

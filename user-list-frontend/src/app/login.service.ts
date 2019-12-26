@@ -1,19 +1,10 @@
-import {Injectable} from '@angular/core';
-import {AuthenticationParameters, AuthResponse, Configuration, UserAgentApplication} from 'msal';
-import {environment} from '../environments/environment';
+import {Inject, Injectable} from '@angular/core';
+import {AuthenticationParameters, AuthResponse, UserAgentApplication} from 'msal';
 import {AuthError} from 'msal/src/error/AuthError';
 import {StringDict} from 'msal/lib-es6/MsalTypes';
 import {from, Subscription, timer} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
-
-// Configuration object constructed.
-const config: Configuration = {
-  auth: {
-    clientId: environment.clientId,
-    redirectUri: environment.loginRedirectUri,
-    authority: `https://login.microsoftonline.com/${environment.tenantId}`
-  }
-};
+import {ENVIRONMENT_CONFIG, EnvironmentConfig} from './core/services/app-init.service';
 
 const authRequest: AuthenticationParameters = {
   scopes: [
@@ -25,8 +16,6 @@ const authRequest: AuthenticationParameters = {
 const loginRequest: AuthenticationParameters = {
   scopes: ['openid', 'email']
 };
-
-const userAgentApplication = new UserAgentApplication(config);
 
 export interface User {
   readonly loggedIn: boolean;
@@ -45,7 +34,16 @@ const UnknownPrincipal: User = {
 })
 export class LoginService {
 
-  constructor() {
+  private userAgentApplication: UserAgentApplication;
+
+  constructor(@Inject(ENVIRONMENT_CONFIG) private environmentConfig: EnvironmentConfig) {
+    this.userAgentApplication = new UserAgentApplication({
+      auth: {
+        clientId: this.environmentConfig.clientId,
+        redirectUri: this.environmentConfig.redirectUri,
+        authority: `https://login.microsoftonline.com/${this.environmentConfig.tenantId}`
+      }
+    });
   }
 
   private users: Subscription;
@@ -77,7 +75,7 @@ export class LoginService {
   }
 
   public checkLogin() {
-    const account = userAgentApplication.getAccount();
+    const account = this.userAgentApplication.getAccount();
     if (account) {
       this.user = LoginService.toPrincipal(account.idToken);
       this.subscribeToIdTokenRenewal();
@@ -85,7 +83,7 @@ export class LoginService {
   }
 
   public login() {
-    userAgentApplication.loginPopup(loginRequest)
+    this.userAgentApplication.loginPopup(loginRequest)
       .then(loginResponse => {
         console.log(`successful login: ${loginResponse.idToken.claims.toString()}`);
 
@@ -94,7 +92,7 @@ export class LoginService {
         // get the token immediately to cache in MSAL it for subsequent requests
         return this.getAuthResponse();
       })
-      .then(authResponse => {
+      .then(() => {
         console.log('access token acquired');
       })
       .catch((authError: AuthError) => {
@@ -112,15 +110,15 @@ export class LoginService {
   public logout() {
     this.users.unsubscribe();
     this.user = UnknownPrincipal;
-    userAgentApplication.logout();
+    this.userAgentApplication.logout();
   }
 
   private getAuthResponse(): Promise<AuthResponse> {
-    return userAgentApplication.acquireTokenSilent(authRequest)
+    return this.userAgentApplication.acquireTokenSilent(authRequest)
       .catch((authError: AuthError) => {
         console.log(authError);
         if (LoginService.interactionRequired(authError)) {
-          return userAgentApplication.acquireTokenPopup(authRequest);
+          return this.userAgentApplication.acquireTokenPopup(authRequest);
         } else {
           throw authError;
         }
@@ -130,9 +128,9 @@ export class LoginService {
   private subscribeToIdTokenRenewal() {
     this.users = timer(0, 5000)
       .pipe(
-        switchMap(() => from(userAgentApplication.acquireTokenSilent(loginRequest))),
+        switchMap(() => from(this.userAgentApplication.acquireTokenSilent(loginRequest))),
         map(loginResponse => LoginService.toPrincipal(loginResponse.idToken.claims))
       )
-      .subscribe(user => this.user = user, error => this.user = UnknownPrincipal);
+      .subscribe(user => this.user = user, () => this.user = UnknownPrincipal);
   }
 }
