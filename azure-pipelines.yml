@@ -10,6 +10,11 @@ stages:
         steps:
           - checkout: self
 
+          - task: NodeTool@0
+            displayName: 'Install Node.js'
+            inputs:
+              versionSpec: '10.x'
+
           - task: Gradle@2
             displayName: Gradle Build (also build the Docker image and the Angular-based SPA distribution)
             inputs:
