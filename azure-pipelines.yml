@@ -15,6 +15,11 @@ stages:
             inputs:
               versionSpec: '10.x'
 
+          - task: Npm@1
+            inputs:
+              command: 'install'
+              workingDir: 'user-list-frontend'
+
           - task: Gradle@2
             displayName: Gradle Build (also build the Docker image and the Angular-based SPA distribution)
             inputs:
