@@ -51,9 +51,9 @@ stages:
             inputs:
               command: push
               repository: acralniwesteuropeshared001/user-list-app
-                tags: |
-                  latest
-                  1.0.0
+              tags: |
+                latest
+                1.0.0
 
           - task: Docker@2
             displayName: Logout to the repository
