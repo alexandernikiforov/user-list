@@ -50,7 +50,7 @@ stages:
             displayName: Push the built image to the Azure Container Registry
             inputs:
               command: push
-              repository: acralniwesteuropeshared001/user-list-app
+              repository: acralniwesteuropeshared001.azurecr.io/user-list-app
               tags: |
                 latest
                 1.0.0
