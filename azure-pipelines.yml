@@ -46,11 +46,21 @@ stages:
               command: login
               containerRegistry: acrShared001Connection
 
+          #          - task: Gradle@2
+          #            displayName: Publish the Docker image
+          #            inputs:
+          #              workingDirectory: ''
+          #              gradleWrapperFile: 'gradlew'
+          #              javaHomeOption: 'JDKVersion'
+          #              jdkVersionOption: '1.11'
+          #              jdkArchitectureOption: 'x64'
+          #              tasks: 'publishImage'
+
           - task: Docker@2
             displayName: Push the built image to the Azure Container Registry
             inputs:
               command: push
-              repository: acralniwesteuropeshared001.azurecr.io/user-list-app
+              repository: user-list-app
               tags: |
                 latest
                 1.0.0
