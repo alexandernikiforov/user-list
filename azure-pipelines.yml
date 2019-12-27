@@ -16,8 +16,16 @@ stages:
               versionSpec: '10.x'
 
           - task: Npm@1
+            displayName: 'Execute npm install'
             inputs:
               command: 'install'
+              workingDir: 'user-list-frontend'
+
+          - task: Npm@1
+            displayName: 'Install Angular CLI'
+            inputs:
+              command: 'custom'
+              customCommand: 'install -g @angular/cli'
               workingDir: 'user-list-frontend'
 
           - task: Gradle@2
