@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/alexandernikiforov/user-list.svg?branch=master)](https://travis-ci.com/alexandernikiforov/user-list)
+[![Build Status](https://dev.azure.com/alexandernikiforov/user-list/_apis/build/status/alexandernikiforov.user-list?branchName=master)](https://dev.azure.com/alexandernikiforov/user-list/_build/latest?definitionId=1&branchName=master)
 # Another User List
 This is a sample project aiming to demonstrate the following:
 * How to integrate an Angular-based frontend with the backend written in Spring Boot;
@@ -6,6 +6,6 @@ This is a sample project aiming to demonstrate the following:
 * How to use Azure Identity Management to restrict access to the application.
 
 Technologies used:
-* Java 13 (;
+* Java 11;
 * Spring Boot 2.2.1;
 * Angular 8.
