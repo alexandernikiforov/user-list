@@ -11,7 +11,7 @@ stages:
           - checkout: self
 
           - task: Gradle@2
-            dispayName: Gradle Build (also build the Docker image and the Angular-based SPA distribution)
+            displayName: Gradle Build (also build the Docker image and the Angular-based SPA distribution)
             inputs:
               workingDirectory: ''
               gradleWrapperFile: 'gradlew'
