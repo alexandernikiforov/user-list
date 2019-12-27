@@ -46,16 +46,6 @@ stages:
               command: login
               containerRegistry: acrShared001Connection
 
-          #          - task: Gradle@2
-          #            displayName: Publish the Docker image
-          #            inputs:
-          #              workingDirectory: ''
-          #              gradleWrapperFile: 'gradlew'
-          #              javaHomeOption: 'JDKVersion'
-          #              jdkVersionOption: '1.11'
-          #              jdkArchitectureOption: 'x64'
-          #              tasks: 'publishImage'
-
           - task: Docker@2
             displayName: Push the built image to the Azure Container Registry
             inputs:
@@ -70,3 +60,9 @@ stages:
             inputs:
               command: logout
               containerRegistry: acrShared001Connection
+
+          - task: PublishPipelineArtifact@1
+            displayName: Publish the frontend app as artifact
+            inputs:
+              targetPath: 'user-list-frontend/build/distributions'
+              artifactName: 'user-list-frontend'
