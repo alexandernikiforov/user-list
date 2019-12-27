@@ -40,23 +40,23 @@ stages:
               testResultsFiles: '**/TEST-*.xml'
               tasks: 'build'
 
-#          - task: Docker@2
-#            displayName: Login to the Azure Container Registry
-#            inputs:
-#              command: login
-#              containerRegistry: dockerRegistryServiceConnection1
-#
-#          - task: Docker@2
-#            displayName: Push the built image to the Azure Container Registry
-#            inputs:
-#              command: push
-#              repository: someUser/contoso
-#                tags: |
-#                  tag1
-#                  tag2
-#
-#          - task: Docker@2
-#            displayName: Logout to the repository
-#            inputs:
-#              command: logout
-#              containerRegistry: dockerRegistryServiceConnection1
+          - task: Docker@2
+            displayName: Login to the Azure Container Registry
+            inputs:
+              command: login
+              containerRegistry: acrShared001Connection
+
+          - task: Docker@2
+            displayName: Push the built image to the Azure Container Registry
+            inputs:
+              command: push
+              repository: acralniwesteuropeshared001/user-list-app
+                tags: |
+                  latest
+                  1.0.0
+
+          - task: Docker@2
+            displayName: Logout to the repository
+            inputs:
+              command: logout
+              containerRegistry: acrShared001Connection
